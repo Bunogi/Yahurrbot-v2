@@ -1,4 +1,5 @@
 ﻿using Discord;
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace YahurrBot_v._2.Modules
 		{
 			this.client = client;
 
-			//LoadPoints ();
+			users = Load<List<BoyStatus>> ("BoyPoints");
+
 			Help.addHelp (" Goodboy (name)", "Gives a goodboy point to a player");
 			Help.addHelp (" Badboy (name)", "Takes a goodboy point from a player");
 		}
@@ -32,12 +34,12 @@ namespace YahurrBot_v._2.Modules
 			{
 				case "goodboy":
 				Goodboy (commdands, e);
-				//SavePoints ();
+				Save (users, "BoyPoints", true);
 				break;
 
 				case "badboy":
 				Badboy (commdands, e);
-				//SavePoints ();
+				Save (users, "BoyPoints", true);
 				break;
 
 				case "!points":
@@ -61,45 +63,29 @@ namespace YahurrBot_v._2.Modules
 				break;
 
 				case "save":
-				//SavePoints ();
+				Save (users, "BoyPoints", true);
 				break;
 
 				case "load":
-				//LoadPoints ();
+				users = Load<List<BoyStatus>> ("BoyPoints");
 				break;
 
 				case "reset":
-				File.WriteAllText (path + "/Files/Saves.txt", string.Empty);
+				users = new List<BoyStatus> ();
+				Save (users, "BoyPoints", true);
+				break;
+
+				case "resetSpend":
+				foreach (BoyStatus bois in users)
+				{
+					bois.ResetSpend ();
+				}
 				break;
 
 				default:
 				break;
 			}
 		}
-
-		/*public void SavePoints ()
-		{
-			string json = JsonConvert.SerializeObject (users.ToArray (), Formatting.None);
-
-			File.WriteAllText (path + "/Files/Saves.txt", json, System.Text.Encoding.UTF8);
-		}*/
-
-		/*public void LoadPoints ()
-		{
-			JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/Saves.txt", System.Text.Encoding.UTF8));
-			List<BoyStatus> newUsers = new List<BoyStatus> ();
-
-			for (int i = 0; i < j.Count; i++)
-			{
-				string userName = (string)j[i]["userName"];
-				int points = int.Parse ((string)j[i]["points"]);
-				int toSend = int.Parse ((string)j[i]["toSend"]);
-
-				newUsers.Add (new BoyStatus (userName, points, toSend));
-			}
-
-			users = newUsers;
-		}*/
 
 		private void Goodboy ( string[] commdands, MessageEventArgs e )
 		{
@@ -181,7 +167,6 @@ namespace YahurrBot_v._2.Modules
 
 	internal class BoyStatus
 	{
-		[JsonIgnore]
 		private string name;
 
 		public string userName
@@ -194,7 +179,6 @@ namespace YahurrBot_v._2.Modules
 
 		private int boyPoints;
 
-		[JsonProperty ("points")]
 		public int points
 		{
 			get
@@ -205,13 +189,19 @@ namespace YahurrBot_v._2.Modules
 
 		private int left = 3;
 
-		[JsonProperty ("toSend")]
 		public int toSend
 		{
 			get
 			{
 				return left;
 			}
+		}
+
+		[JsonConstructor]
+		public BoyStatus ( string userName, int points )
+		{
+			this.name = userName;
+			this.boyPoints = points;
 		}
 
 		public BoyStatus ( string userName )
@@ -239,6 +229,11 @@ namespace YahurrBot_v._2.Modules
 		public void SpendToSend ()
 		{
 			left--;
+		}
+
+		public void ResetSpend ()
+		{
+			left = 3;
 		}
 	}
 }

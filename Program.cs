@@ -31,7 +31,7 @@ namespace YahurrBot_v._2
 				string line = e.Message.Text;
 				string[] commands = (line + " ").Split (' ');
 
-				if (!e.User.IsBot && commands[0] != null && commands[0].Contains ('!'))
+				if (!e.User.IsBot && commands[0] != null)
 				{
 					Module.Command (commands, line, e);
 				}

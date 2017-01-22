@@ -210,16 +210,25 @@ namespace YahurrBot_v._2
 
 		public T Load<T> ( string name )
 		{
-			dynamic obj = savedObjects.Find (a => { return a.name == name; }).obj;
+			DataObject dataObj = savedObjects.Find (a => { return a.name == name; });
 
 			// Just return the dynamic is it matches T. It will be changed to string when it is loaded from text.
-			if (obj.GetType () == typeof (T))
+			if (dataObj == null)
 			{
-				return (T)obj;
+				return JsonConvert.DeserializeObject<T> ("[]"); // When u feelin lasy
 			}
 			else
 			{
-				return JsonConvert.DeserializeObject<T> (obj.ToString ());
+				dynamic obj = dataObj.obj == null ? null : dataObj.obj;
+
+				if (obj.GetType () == typeof (T))
+				{
+					return (T)obj;
+				}
+				else
+				{
+					return JsonConvert.DeserializeObject<T> (obj.ToString ());
+				}
 			}
 		}
 	}

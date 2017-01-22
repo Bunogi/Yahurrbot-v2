@@ -27,7 +27,7 @@ namespace YahurrBot_v._2.Modules
 				gameBefore.StopPlaying ();
 			}
 
-			//SaveTime ();
+			Save (profiles, "GameTime", true);
 		}
 
 		public override void ParseCommands ( string[] commands, MessageEventArgs e )
@@ -93,40 +93,8 @@ namespace YahurrBot_v._2.Modules
 		public override void Load ( DiscordClient client )
 		{
 			Help.addHelp ("!time", "Gives you a list of games you've played and amount of hours");
-			//LoadPoints ();
+			profiles = Load<List<Profile>> ("GameTime");
 		}
-
-		/*public void SaveTime ()
-		{
-			string json = JsonConvert.SerializeObject (profiles.ToArray (), Formatting.None);
-
-			File.WriteAllText (path + "/Files/GameCounter.txt", json, System.Text.Encoding.UTF8);
-		}*/
-
-		/*public void LoadPoints ()
-		{
-			JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/GameCounter.txt", System.Text.Encoding.UTF8));
-			List<Profile> newProfiles = new List<Profile> ();
-
-			for (int i = 0; i < j.Count; i++)
-			{
-				string userName = (string)j[i]["userName"];
-
-				JArray foundGames = (JArray)j[i]["games"];
-				List<Game> newGames = new List<Game> ();
-				for (int a = 0; a < foundGames.Count; a++)
-				{
-					string gameName = (string)foundGames[a]["name"];
-					TimeSpan time = TimeSpan.Parse ((string)foundGames[a]["timePlayed"]);
-
-					newGames.Add (new Game (gameName, time));
-				}
-
-				newProfiles.Add (new Profile (userName, newGames));
-			}
-
-			profiles = newProfiles;
-		}*/
 
 		private Profile FindProfile ( string name )
 		{
@@ -155,15 +123,15 @@ namespace YahurrBot_v._2.Modules
 
 			public List<Game> games = new List<Game> ();
 
+			public Profile ( string userName, List<Game> games )
+			{
+				user = userName;
+				this.games = games;
+			}
+
 			public Profile ( string name )
 			{
 				user = name;
-			}
-
-			public Profile ( string name, List<Game> games )
-			{
-				user = name;
-				this.games = games;
 			}
 
 			public Game FindGame ( string name )
@@ -224,15 +192,16 @@ namespace YahurrBot_v._2.Modules
 
 			private DateTime time;
 
-			public Game ( string name )
-			{
-				gameName = name;
-			}
-
+			[JsonConstructor]
 			public Game ( string name, TimeSpan timePlayed )
 			{
 				gameName = name;
 				gameTime = timePlayed;
+			}
+
+			public Game ( string name )
+			{
+				gameName = name;
 			}
 
 			public void StartPlaying ()

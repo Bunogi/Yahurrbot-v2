@@ -26,10 +26,8 @@ namespace YahurrBot_v._2.Modules
 				logs.Add (log);
 			}
 
-			Save (logs, "YahurrLog", true);
+			//Save (logs, "YahurrLog", true);
 			List<ChatLog> newLogs = Load<List<ChatLog>> ("YahurrLog");
-
-			//Console.WriteLine (logs.Count+":"+newLogs.Count);
 		}
 
 		class ChatLog
