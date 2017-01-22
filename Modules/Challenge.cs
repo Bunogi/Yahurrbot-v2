@@ -289,20 +289,38 @@ namespace YahurrBot_v._2.Modules
 			}
 		}
 
+		/// <summary>
+		/// Configure the game her using the settings variable.
+		/// </summary>
 		public virtual void ConfigureGame ()
 		{
 		}
 
+		/// <summary>
+		/// Called when both players have accepted and the game is starting.
+		/// </summary>
+		/// <param name="creator">The person who created the game.</param>
+		/// <param name="joined">List of users who joined the game. (Excluding the creator)</param>
+		/// <returns>The first frame to draw.</returns>
 		public virtual string StartGame ( User creator, List<User> joined )
 		{
 			return "";
 		}
 
+		/// <summary>
+		/// Called when the current player has given a input.
+		/// </summary>
+		/// <param name="player">Index of the player that is playing this round. Index in the list from StartGame</param>
+		/// <param name="arguments">The arguments the player gave separated by space.</param>
+		/// <returns>The new frame to draw.</returns>
 		public virtual string PlayRound ( int player, string[] arguments )
 		{
 			return "";
 		}
 
+		/// <summary>
+		/// Called after every round. Return true if the current player has won.
+		/// </summary>
 		public virtual bool HasWon ()
 		{
 			return true;

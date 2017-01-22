@@ -42,7 +42,7 @@ namespace YahurrBot_v._2
 				string line = e.After.Text;
 				string[] commands = (line + " ").Split (' ');
 
-				if (!e.User.IsBot && commands[0] != null && commands[0].Contains ('!'))
+				if (!e.User.IsBot && commands[0] != null)
 				{
 					Module.UpdateCommand (commands, line, e);
 				}
@@ -55,7 +55,11 @@ namespace YahurrBot_v._2
 
 			client.ServerAvailable += ( s, e ) =>
 			{
-				Console.WriteLine ("Connected to server: " + e.Server.Name);
+
+				if (client.FindServers (e.Server.Name) != null)
+				{
+					Console.WriteLine ("Connected to server: " + e.Server.Name);
+				}
 			};
 
 			client.ExecuteAndWait (async () =>
@@ -80,7 +84,7 @@ namespace YahurrBot_v._2
 
 				await Task.Run (() =>
 				{
-					Console.WriteLine (loadedModules + " modules loaded.");
+					Console.WriteLine (loadedModules + " modules loaded. \n");
 				});
 
 				while (true)
