@@ -18,7 +18,7 @@ namespace YahurrBot_v._2.Modules
 		{
 			this.client = client;
 
-			LoadPoints ();
+			//LoadPoints ();
 			Help.addHelp (" Goodboy (name)", "Gives a goodboy point to a player");
 			Help.addHelp (" Badboy (name)", "Takes a goodboy point from a player");
 		}
@@ -32,12 +32,12 @@ namespace YahurrBot_v._2.Modules
 			{
 				case "goodboy":
 				Goodboy (commdands, e);
-				SavePoints ();
+				//SavePoints ();
 				break;
 
 				case "badboy":
 				Badboy (commdands, e);
-				SavePoints ();
+				//SavePoints ();
 				break;
 
 				case "!points":
@@ -61,11 +61,11 @@ namespace YahurrBot_v._2.Modules
 				break;
 
 				case "save":
-				SavePoints ();
+				//SavePoints ();
 				break;
 
 				case "load":
-				LoadPoints ();
+				//LoadPoints ();
 				break;
 
 				case "reset":
@@ -77,14 +77,14 @@ namespace YahurrBot_v._2.Modules
 			}
 		}
 
-		public void SavePoints ()
+		/*public void SavePoints ()
 		{
 			string json = JsonConvert.SerializeObject (users.ToArray (), Formatting.None);
 
 			File.WriteAllText (path + "/Files/Saves.txt", json, System.Text.Encoding.UTF8);
-		}
+		}*/
 
-		public void LoadPoints ()
+		/*public void LoadPoints ()
 		{
 			JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/Saves.txt", System.Text.Encoding.UTF8));
 			List<BoyStatus> newUsers = new List<BoyStatus> ();
@@ -99,7 +99,7 @@ namespace YahurrBot_v._2.Modules
 			}
 
 			users = newUsers;
-		}
+		}*/
 
 		private void Goodboy ( string[] commdands, MessageEventArgs e )
 		{

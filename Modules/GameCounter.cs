@@ -27,7 +27,7 @@ namespace YahurrBot_v._2.Modules
 				gameBefore.StopPlaying ();
 			}
 
-			SaveTime ();
+			//SaveTime ();
 		}
 
 		public override void ParseCommands ( string[] commands, MessageEventArgs e )
@@ -93,17 +93,17 @@ namespace YahurrBot_v._2.Modules
 		public override void Load ( DiscordClient client )
 		{
 			Help.addHelp ("!time", "Gives you a list of games you've played and amount of hours");
-			LoadPoints ();
+			//LoadPoints ();
 		}
 
-		public void SaveTime ()
+		/*public void SaveTime ()
 		{
 			string json = JsonConvert.SerializeObject (profiles.ToArray (), Formatting.None);
 
 			File.WriteAllText (path + "/Files/GameCounter.txt", json, System.Text.Encoding.UTF8);
-		}
+		}*/
 
-		public void LoadPoints ()
+		/*public void LoadPoints ()
 		{
 			JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/GameCounter.txt", System.Text.Encoding.UTF8));
 			List<Profile> newProfiles = new List<Profile> ();
@@ -126,7 +126,7 @@ namespace YahurrBot_v._2.Modules
 			}
 
 			profiles = newProfiles;
-		}
+		}*/
 
 		private Profile FindProfile ( string name )
 		{

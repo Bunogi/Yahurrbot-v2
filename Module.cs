@@ -21,7 +21,8 @@ namespace YahurrBot_v._2
 			// Loades saved data
 			string dir = Directory.GetCurrentDirectory ();
 			string loaded = File.ReadAllText (dir + "/Files/Saves.txt", System.Text.Encoding.UTF8);
-			savedObjects = JsonConvert.DeserializeObject<List<DataObject>> (loaded);
+			List<DataObject> loadedObjects = JsonConvert.DeserializeObject<List<DataObject>> (loaded);
+			savedObjects = loadedObjects == null ? savedObjects : loadedObjects;
 
 			// Load all the available modules.
 			IEnumerable<Type> types = from t in Assembly.GetExecutingAssembly ().GetTypes () where t.IsClass && typeof (Module).IsAssignableFrom (t) && t.IsAbstract == false && !Attribute.IsDefined (t, typeof (Attributes.IgnoreModule)) select t;
