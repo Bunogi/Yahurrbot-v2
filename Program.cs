@@ -55,7 +55,6 @@ namespace YahurrBot_v._2
 
 			client.ServerAvailable += ( s, e ) =>
 			{
-
 				if (client.FindServers (e.Server.Name) != null)
 				{
 					Console.WriteLine ("Connected to server: " + e.Server.Name);
@@ -95,11 +94,11 @@ namespace YahurrBot_v._2
 					switch (commands[0])
 					{
 						case "say":
-						await client.FindServers (commands[1]).FirstOrDefault ().FindChannels (commands[2]).FirstOrDefault ().SendMessage (commands[3].Replace ('-', ' '));
-						break;
+							await client.FindServers (commands[1]).FirstOrDefault ().FindChannels (commands[2]).FirstOrDefault ().SendMessage (commands[3].Replace ('-', ' '));
+							break;
 
 						default:
-						break;
+							break;
 					}
 				}
 			});

@@ -30,6 +30,9 @@ namespace YahurrBot_v._2.Modules
 		/// </summary>
 		public override void ParseCommands ( string[] commdands, MessageEventArgs e )
 		{
+
+			Console.WriteLine (commdands[1]);
+
 			switch (commdands[0])
 			{
 				case "goodboy":
@@ -89,10 +92,8 @@ namespace YahurrBot_v._2.Modules
 
 		private void Goodboy ( string[] commdands, MessageEventArgs e )
 		{
-			IEnumerable<User> clients = e.Channel.FindUsers (commdands[1]);
-			User user = null;
-			if (client != null)
-				user = clients.First ();
+			User user = FindPlayer (e.Server, commdands[1]);
+
 			if (user != null && e.Message.User != user)
 			{
 				BoyStatus boy = FindBoy (e.User.Name);
@@ -111,13 +112,8 @@ namespace YahurrBot_v._2.Modules
 
 		private void Badboy ( string[] commdands, MessageEventArgs e )
 		{
-			IEnumerable<User> clients = e.Channel.FindUsers (commdands[1]);
-			User user = null;
+			User user = FindPlayer (e.Server, commdands[1]);
 
-			clients = e.Channel.FindUsers (commdands[1]);
-			user = null;
-			if (client != null)
-				user = clients.First ();
 			if (user != null && e.Message.User != user)
 			{
 				BoyStatus boy = FindBoy (e.User.Name);

@@ -138,12 +138,10 @@ namespace YahurrBot_v._2
 		/// <param name="e">Discords MessageUpdatedEvent.</param>
 		public virtual void CommandUpdated ( string[] commands, Discord.MessageUpdatedEventArgs e )
 		{
-
 		}
 
 		public virtual void CommandUpdated ( string[] commands, string line, Discord.MessageUpdatedEventArgs e )
 		{
-
 		}
 
 		/// <summary>
@@ -166,8 +164,6 @@ namespace YahurrBot_v._2
 		{
 			identefier = identefier.Replace ("@", "");
 			List<Discord.User> users = new List<Discord.User> (server.Users);
-
-			Console.WriteLine (users.Count);
 
 			Discord.User user = users.Find (a =>
 			{
