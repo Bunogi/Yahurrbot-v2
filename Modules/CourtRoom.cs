@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace YahurrBot_v._2.Modules
 {
-	[YahurrBot_v._2.Attributes.FilterServer("Kampområde mot engelsk", Attributes.FilterSetting.Whitelist)]
+	[YahurrBot_v._2.Attributes.FilterServer ("Kampområde mot engelsk", Attributes.FilterSetting.Whitelist)]
 	internal class CourtRoom : Module
 	{
 		private Role judgeRole;
@@ -21,18 +21,18 @@ namespace YahurrBot_v._2.Modules
 
 		private User courtLeader;
 
-		private void RemoveFromQueue()
+		private void RemoveFromQueue ()
 		{
 			if (queue.Count > 1)
 				queue.RemoveAt(0);
 		}
 
-		public override void ParseCommands(string[] commands, MessageEventArgs e)
+		public override void ParseCommands ( string[] commands, MessageEventArgs e )
 		{
 			if (courtLeader == null) 
 			{
-				courtLeader = FindPlayer(e.Server, "Håkon");
-				Console.Write("Court leader: " + courtLeader.Name);
+				courtLeader = FindPlayer (e.Server, "Håkon");
+				Console.Write ("Court leader: " + courtLeader.Name);
 				judgeRole = e.Server.FindRoles ("Dommerfaen", true).Last ();
 				jurorRole = e.Server.FindRoles ("Jurist", true).Last ();
 			}
@@ -44,11 +44,11 @@ namespace YahurrBot_v._2.Modules
 			{
 				if (commands[0] == "k")
 				{
-					e.Message.Delete();
-					if (queue.Contains(e.User))
-						e.Channel.SendMessage(e.User.Mention + " ER EN SLEM GUTT! Du er allerede i køen!");
+					e.Message.Delete ();
+					if (queue.Contains (e.User))
+						e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Du er allerede i køen!");
 					else
-						queue.Add(e.User);
+						queue.Add (e.User);
 					return;
 				}
 				else if (commands[0] == "!kø")
@@ -60,27 +60,27 @@ namespace YahurrBot_v._2.Modules
 					}
 					e.Message.Delete();
 					if (e.User != courtLeader)
-						e.User.SendMessage(names);
+						e.User.SendMessage (names);
 					else
-						e.Channel.SendMessage(names);
+						e.Channel.SendMessage (names);
 					return;
 				}
 
 				if (queue.Count < 1)
 				{
-					e.Channel.SendMessage(e.User.Mention + " ER EN SLEM GUTT! Du må vente til det er din tur!");
-					e.Message.Delete();
+					e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Du må vente til det er din tur!");
+					e.Message.Delete ();
 					return;
 				}
 				else if (e.User != courtLeader) 
 				{
-					if (queue.First() != e.User)
+					if (queue.First () != e.User)
 					{
-						e.Channel.SendMessage(e.User.Mention + " ER EN SLEM GUTT! Du må vente til det er din tur!");
-						e.Message.Delete();
+						e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Du må vente til det er din tur!");
+						e.Message.Delete ();
 					}
-					else if (commands.Last() == "f")
-						RemoveFromQueue();
+					else if (commands.Last () == "f")
+						RemoveFromQueue ();
 					return;
 				}
 			}
@@ -91,26 +91,26 @@ namespace YahurrBot_v._2.Modules
 				case "!rettsak":
 				if (inSession)
 				{
-					e.Channel.SendMessage(e.User.Mention + " ER EN SLEM GUTT! Avslutt rettsaken før du starter en ny.");
+					e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Avslutt rettsaken før du starter en ny.");
 					return;
 				}
 
 				inSession = true;
 
 				//e.Server.FindUsers("Vetle André", true).Last ().AddRoles (dommerRolle);
-				juryMembers = new List<User>();
-				queue = new List<User>();
+				juryMembers = new List<User> ();
+				queue = new List<User> ();
 
 				foreach (string name in commands)
 				{
-					User user = FindPlayer(e.Server, name);
+					User user = FindPlayer (e.Server, name);
 					if (user != null)
-						juryMembers.Add(user);
+						juryMembers.Add (user);
 					//bruker.AddRoles (juristRolle);
 				}
 
 				string userNames = "";
-				foreach (User bruker in juryMembers.Skip(1))
+				foreach (User bruker in juryMembers.Skip (1))
 					userNames += ", " + bruker.Mention;
 				e.Channel.SendMessage ("Jury for dagens rettsak: " + juryMembers[0].Mention + userNames);
 				return;
@@ -128,7 +128,7 @@ namespace YahurrBot_v._2.Modules
 				{
 					bruker.RemoveRoles (juristRolle);
 				} */
-				e.Channel.SendMessage("Rettsaken er over! Takk til de som deltok.");
+				e.Channel.SendMessage ("Rettsaken er over! Takk til de som deltok.");
 				return;
 
 				default:
