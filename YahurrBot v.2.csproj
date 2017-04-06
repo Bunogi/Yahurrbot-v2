@@ -102,11 +102,10 @@
     <Compile Include="Module.cs" />
     <Compile Include="Modules\BoyPoints.cs" />
     <Compile Include="Modules\Challenge.cs" />
+    <Compile Include="Modules\CourtRoom.cs" />
     <Compile Include="Modules\GameCounter.cs" />
     <Compile Include="Modules\GameLog.cs" />
-    <Compile Include="Modules\Google.cs" />
     <Compile Include="Modules\help.cs" />
-    <Compile Include="Modules\RtGame.cs" />
     <Compile Include="Modules\UselessInteraction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

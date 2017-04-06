@@ -7,7 +7,7 @@ namespace YahurrBot_v._2
 {
 	internal class Program
 	{
-		private string token = "MjI4NDYzNTEyMzQ1NzcyMDMy.Csxslw.0Khe_VrvEdR86XWtx4I5lUnArKU";
+		private string token = "MjI4NDYzNTEyMzQ1NzcyMDMy.C8UfvA.sG_LKY4PEsPzqntISxrKUD0mOjc";
 		private static Program program;
 
 		private static void Main ( string[] args )
