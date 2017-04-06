@@ -23,8 +23,8 @@ namespace YahurrBot_v._2.Modules
 
 		private void RemoveFromQueue ()
 		{
-			if (queue.Count > 1)
-				queue.RemoveAt(0);
+			if (queue.Count > 0) 
+				queue.RemoveAt (0);
 		}
 
 		public override void ParseCommands ( string[] commands, MessageEventArgs e )
@@ -32,13 +32,61 @@ namespace YahurrBot_v._2.Modules
 			if (courtLeader == null) 
 			{
 				courtLeader = FindPlayer (e.Server, "Håkon");
-				Console.Write ("Court leader: " + courtLeader.Name);
+				Console.Write ("Court leader: " + courtLeader.Name + "\n");
 				judgeRole = e.Server.FindRoles ("Dommerfaen", true).Last ();
 				jurorRole = e.Server.FindRoles ("Jurist", true).Last ();
 			}
 
 			if (e.Channel.Name != "robottest")
 				return;
+
+			if (e.User == courtLeader)
+			{
+				switch (commands[0])
+				{
+					case "!rettsak":
+					if (inSession)
+					{
+						e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Avslutt rettsaken før du starter en ny.");
+						return;
+					}
+					inSession = true;
+
+					//e.Server.FindUsers("Vetle André", true).Last ().AddRoles (dommerRolle);
+					juryMembers = new List<User> ();
+					queue = new List<User> ();
+
+					foreach (string name in commands)
+					{
+						User user = FindPlayer (e.Server, name);
+						if (user != null)
+							juryMembers.Add (user);
+						//bruker.AddRoles (juristRolle);
+					}
+
+					string userNames = "";
+					foreach (User bruker in juryMembers.Skip (1))
+						userNames += ", " + bruker.Mention;
+
+					e.Channel.SendMessage("Jury for dagens rettsak: " + juryMembers[0].Mention + userNames);
+					return;
+
+					case "!stopprettsak":
+					if (!inSession)
+					{
+						e.Channel.SendMessage(e.User.Mention + " ER EN SLEM GUTT! Man kan ikke avslutte en rettsak som aldri begynte!");
+						return;
+					}
+					//e.Server.FindUsers("Vetle André", true).Last ().RemoveRoles (dommerRolle);
+					juryMembers = queue = null;
+
+					/* foreach (User bruker in juryMedlemmer)
+						bruker.RemoveRoles (juristRolle); */
+
+					e.Channel.SendMessage("Rettsaken er over! Takk til de som deltok.");
+					return;
+				}
+			}
 
 			if (inSession)
 			{
@@ -72,68 +120,17 @@ namespace YahurrBot_v._2.Modules
 					e.Message.Delete ();
 					return;
 				}
-				else if (e.User != courtLeader) 
+
+				if (queue.First() != e.User)
 				{
-					if (queue.First () != e.User)
-					{
-						e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Du må vente til det er din tur!");
-						e.Message.Delete ();
-					}
-					else if (commands.Last () == "f")
-						RemoveFromQueue ();
-					return;
+					e.Channel.SendMessage(e.User.Mention + " ER EN SLEM GUTT! Du må vente til det er din tur!");
+					e.Message.Delete ();
 				}
-			}
-
-			//Commands for the leaders
-			switch (commands[0]) 
-			{
-				case "!rettsak":
-				if (inSession)
+				else if (commands[commands.Count () - 2] == "f")
 				{
-					e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Avslutt rettsaken før du starter en ny.");
-					return;
+					RemoveFromQueue ();
 				}
-
-				inSession = true;
-
-				//e.Server.FindUsers("Vetle André", true).Last ().AddRoles (dommerRolle);
-				juryMembers = new List<User> ();
-				queue = new List<User> ();
-
-				foreach (string name in commands)
-				{
-					User user = FindPlayer (e.Server, name);
-					if (user != null)
-						juryMembers.Add (user);
-					//bruker.AddRoles (juristRolle);
-				}
-
-				string userNames = "";
-				foreach (User bruker in juryMembers.Skip (1))
-					userNames += ", " + bruker.Mention;
-				e.Channel.SendMessage ("Jury for dagens rettsak: " + juryMembers[0].Mention + userNames);
 				return;
-
-				case "!stopprettsak":
-				if (!inSession)
-				{
-					e.Channel.SendMessage (e.User.Mention + " ER EN SLEM GUTT! Man kan ikke avslutte en rettsak som aldri begynte!");
-					return;
-				}
-				//e.Server.FindUsers("Vetle André", true).Last ().RemoveRoles (dommerRolle);
-				juryMembers = queue = null;
-	
-				/* foreach (User bruker in juryMedlemmer)
-				{
-					bruker.RemoveRoles (juristRolle);
-				} */
-				e.Channel.SendMessage ("Rettsaken er over! Takk til de som deltok.");
-				return;
-
-				default:
-				return;
-
 			}
 		}
 	}
